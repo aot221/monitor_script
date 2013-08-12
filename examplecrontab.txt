@@ -1,3 +1,3 @@
 ### THESE ARE EXAMPLE ENTRIES.   YOU'LL NEED TO CHANGE THE HOME DIR!!!
 0 */3 * * * /usr/bin/python /home/monzum/monitor_script/monitor_disk.py >> /home/monzum/monitor_script/logs/cron_log.monitor_disk
-*/15 * * * * /usr/bin/python /home/monzum/monitor_script/monitor_processes.py -seattlegeni >> /home/monzum/monitor_script/logs/cron_log.monitor_processes
+*/15 * * * * /usr/bin/python /home/monzum/monitor_script/monitor_processes.py -seattleclearinghouse >> /home/monzum/monitor_script/logs/cron_log.monitor_processes
