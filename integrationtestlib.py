@@ -24,6 +24,7 @@ import traceback
 import time
 import socket
 import sys
+import os
 
 # the people to notify on failure/if anything goes wrong
 notify_list = ["jcappos@poly.edu", "monzum@u.washington.edu", "gppressi@gmail.com", "leon.wlaw@gmail.com", "hermanchchen@gmail.com"]
@@ -46,7 +47,15 @@ def log(msg):
   <Returns>
     None.
   """
-  print time.ctime() + " : " + msg
+  if raw_input("Would you like a log file? (y/n)")=='y':
+    save_path = raw_input("Where would you like to save the log file to?") #format for this is'/home/user/...' 
+    name_of_file = "log"
+    completeName = os.path.join(save_path, name_of_file+".txt")         
+    logFile = open(completeName, "a")
+    logFile.write(time.ctime() + " : " + msg)
+    logFile.close()  
+print time.ctime() + " : " + msg
+
   return  
   
   
@@ -82,7 +91,7 @@ def notify(text, subject):
   for emailaddr in notify_list:
     log("notifying " + emailaddr)
     send_gmail.send_gmail(emailaddr, subject, text, "")
-	
+
   return
 
   
