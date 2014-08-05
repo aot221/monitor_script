@@ -16,10 +16,9 @@
 """
 
 import urllib
-import urllib2
 import send_gmail
 import integrationtestlib
-
+import urllib2
 import subprocess
 
 
@@ -37,12 +36,20 @@ SELEXOR_PAGE = "https://selexor.poly.edu:8888/"
 
 
 def retrieve_url(url, data=None):
+  print "retrieve_url"
   args = ["curl", url, "--insecure"]
   if data:
     args += ['--data', '"'+data+'"']
-  response_text = urllib2.urlopen(SELEXOR_PAGE)
+  print "download_process"
+  download_process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+  print "downloadwait"
+  download_process.wait()
+  #print "communicate download: " + str(download_process.communicate()[0])
+  #print download_process.communicate()[0]
   # Return the output of the URL download
-  return response_text.read()
+  #print "communicate download: " + download_process.communicate()[0]
+  return download_process.communicate()[0]
+
 
 def test_selexor_alive():
   response_text = retrieve_url(SELEXOR_PAGE)
@@ -71,7 +78,6 @@ def test_selexor_acquire():
     The vessel dictionary of the acquired vessel.  This can be used to
     is how selexor references each vessel.
   """
-  print "mark"
   get_one_vessel = {
     '0': {
       'id': 0.0, 'allocate': '1', 'rules': {
@@ -81,24 +87,25 @@ def test_selexor_acquire():
     'userdata': userdata,
     'groups': get_one_vessel
     }}
-  response_text = urllib2.urlopen(SELEXOR_PAGE)
-  html = response_text.read()
-  print type(html)
-  query_response = serialize_deserializedata(html)
+  print "Mark0"
+  print userdata
+  response_text = retrieve_url(SELEXOR_PAGE,
+    data=serialize_serializedata(requestinfo))
+  print "Mark1"
+  query_response = serialize_deserializedata(response_text)
   if query_response['data']['status'] != 'working':
     raise Exception("Failed to submit request! Response: " + str(query_response))
-  print "mark1.6"
+  print "Mark2"
   query = {'query': {
     'userdata': userdata
   }}
-  print "mark1.7"
   while query_response['data']['status'] == 'working':
     # Give selexor some time to do its processing...
     sleep(10)
     response_text = retrieve_url(SELEXOR_PAGE,
       data=serialize_serializedata(query)).read()
     query_response = serialize_deserializedata(response_text)
-  print "mark1.8"
+
   if query_response['data']['status'] != 'complete':
     raise Exception("Acquiring one vessel failed! response: " + str(query_response))
 
@@ -128,7 +135,7 @@ def test_selexor_release(vessel_dict):
     'vessels': [vessel_dict]
     }}
 
-  response_text = urllib2.urlopen(SELEXOR_PAGE,
+  response_text = urllib.urlopen(SELEXOR_PAGE,
     data=serialize_serializedata(requestinfo)).read()
 
 
@@ -138,13 +145,14 @@ def main():
   try:
     if username is None or apikey is None:
       raise Exception("Username and/or API key is not set!")
-    test_selexor_alive()
+
+    #test_selexor_alive()
     # Not working, might be that selexor's not performing HTTP requests
     # correctly
     acquired_vessel = test_selexor_acquire()
     # test_selexor_release(acquired_vessel)
   except:
-    print("integrationtestlib.handle_exception('Exception occurred when contacting selexor', ERROR_EMAIL_SUBJECT)")
+    print("integrationtestlib.handle_exception(Exception occurred when contacting selexor, ERROR_EMAIL_SUBJECT)")
     exit()
 
 
