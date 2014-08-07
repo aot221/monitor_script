@@ -24,6 +24,7 @@ import traceback
 import time
 import socket
 import sys
+import os
 
 # the people to notify on failure/if anything goes wrong
 with open("notify_list", "rb") as fp:
