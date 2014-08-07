@@ -30,7 +30,7 @@ import os
 with open("notify_list", "rb") as fp:
     notify_list = []
     for line in fp:
-        notify_list.append(line[:-1]) if line[-1] == "\n" else lines.append(line)
+        notify_list.append(line[:-1]) if line[-1] == "\n" else notify_list.append(line)
 
 def log(msg):
   """
