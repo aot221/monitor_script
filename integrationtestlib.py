@@ -24,13 +24,8 @@ import traceback
 import time
 import socket
 import sys
-import os
 
 # the people to notify on failure/if anything goes wrong
-with open("notify_list", "rb") as fp:
-    notify_list = []
-    for line in fp:
-        notify_list.append(line[:-1]) if line[-1] == "\n" else notify_list.append(line)
 
 def log(msg):
   """
@@ -81,11 +76,17 @@ def notify(text, subject):
     except:
       pass
   subject = subject + " @ "+ hostname + " : " + sys.argv[0]
-  
+  #the people to notify if anyting goes wrong
+
+  with open("email_address_list_file", "r") as emaillist:
+    notify_list = []
+    for emailaddr in notify_list:
+        notify_list.append(line[:-1]) if line[-1] == "\n" else notify_list.append(line)
+
   for emailaddr in notify_list:
     log("notifying " + emailaddr)
     send_gmail.send_gmail(emailaddr, subject, text, "")
-	
+
   return
 
   
