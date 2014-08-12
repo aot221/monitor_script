@@ -1043,8 +1043,12 @@ def main():
     integrationtestlib.log("calling centralizedadvertise_lookup(key: " + str(key) + ")")
     try:
         ret_value = centralizedadvertise_lookup(key)
+        print ret_value
         # TODO: check the return value as well
-        # ret_value = int(ret_value[0])
+        ret_value = int(ret_value[0])
+        if (ret_value != value):
+            integrationtestlib.handle_exception("ret_value is incorrect")
+            print ("ret_value is incorrect")
     except:
         integrationtestlib.handle_exception("centralizedadvertise_lookup() failed")
         sys.exit(0)
