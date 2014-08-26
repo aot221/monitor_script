@@ -85,10 +85,10 @@ def notify(text, subject):
   notify_list = []
   emailFile = open("email_address_list_file", "r")
   notify_list = emailFile.readlines()
-  emailItr = 0
+  notify_list_itr = 0
   for email in notify_list:
     notify_list[emailItr] = email.rstrip("\r\n")
-    emailItr+=1
+    notify_list_itr+=1
 
   for emailaddr in notify_list:
     log("notifying " + emailaddr)
