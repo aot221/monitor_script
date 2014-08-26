@@ -25,12 +25,6 @@ import time
 import socket
 import sys
 
-# the people to notify on failure/if anything goes wrong
-notify_list = [
-  "aot221@nyu.edu",
-  "at_hato_20@yahoo.com",
-]
-
 def log(msg):
   """
   <Purpose>
