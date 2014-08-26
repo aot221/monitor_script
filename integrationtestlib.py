@@ -25,6 +25,7 @@ import time
 import socket
 import sys
 
+
 def log(msg):
   """
   <Purpose>
@@ -80,8 +81,8 @@ def notify(text, subject):
   emailFile = open("email_address_list_file", "r")
   notify_list = emailFile.readlines()
   notify_list_itr = 0
-  for email in notify_list:
-    notify_list[emailItr] = email.rstrip("\r\n")
+  for emailaddr in notify_list:
+    notify_list[notify_list_itr] = emailaddr.rstrip("\r\n")
     notify_list_itr+=1
 
   for emailaddr in notify_list:
