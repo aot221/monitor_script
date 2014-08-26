@@ -80,15 +80,16 @@ def notify(text, subject):
     except:
       pass
   subject = subject + " @ "+ hostname + " : " + sys.argv[0]
+
+  #This will loop through a file containing emails that need to be notified and create a list out of them
   notify_list = []
   emailFile = open("email_address_list_file", "r")
-  #print emailFile.read()
   notify_list = emailFile.readlines()
   emailItr = 0
   for email in notify_list:
     notify_list[emailItr] = email.rstrip("\r\n")
     emailItr+=1
-  print notify_list
+
   for emailaddr in notify_list:
     log("notifying " + emailaddr)
     send_gmail.send_gmail(emailaddr, subject, text, "")
