@@ -26,6 +26,10 @@ import socket
 import sys
 
 # the people to notify on failure/if anything goes wrong
+notify_list = [
+  "aot221@nyu.edu",
+  "at_hato_20@yahoo.com",
+]
 
 def log(msg):
   """
@@ -76,17 +80,19 @@ def notify(text, subject):
     except:
       pass
   subject = subject + " @ "+ hostname + " : " + sys.argv[0]
-  #the people to notify if anyting goes wrong
-
-  with open("email_address_list_file", "r") as emaillist:
-    notify_list = []
-    for emailaddr in notify_list:
-        notify_list.append(line[:-1]) if line[-1] == "\n" else notify_list.append(line)
-
+  notify_list = []
+  emailFile = open("email_address_list_file", "r")
+  #print emailFile.read()
+  notify_list = emailFile.readlines()
+  emailItr = 0
+  for email in notify_list:
+    notify_list[emailItr] = email.rstrip("\r\n")
+    emailItr+=1
+  print notify_list
   for emailaddr in notify_list:
     log("notifying " + emailaddr)
     send_gmail.send_gmail(emailaddr, subject, text, "")
-
+	
   return
 
   
