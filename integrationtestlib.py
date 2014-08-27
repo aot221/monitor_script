@@ -78,17 +78,14 @@ def notify(text, subject):
 
   #This will loop through a file containing emails that need to be notified and create a list out of them
   notify_list = []
-  emailFile = open("email_address_list_file", "r")
-  notify_list = emailFile.readlines()
-  notify_list_itr = 0
-  for emailaddr in notify_list:
-    notify_list[notify_list_itr] = emailaddr.rstrip("\r\n")
-    notify_list_itr+=1
-
-  for emailaddr in notify_list:
-    log("notifying " + emailaddr)
-    send_gmail.send_gmail(emailaddr, subject, text, "")
-	
+  email_file = open("email_address_list_file", "r")
+  email_list = email_file.readlines()
+  email_file.close()
+  for email_address in email_list:
+    email_address = email_address.rstrip("\r\n")
+    notify_list.append(email_address)
+    log("notifying " + email_address)
+    send_gmail.send_gmail(email_address, subject, text, "")
   return
 
   
